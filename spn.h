@@ -26,7 +26,7 @@
 #define INCLUDE_SPN_H
 
 #if !(defined __STDC_VERSION__ && __STDC_VERSION__ >= 199901L)
-SPN_H_REQUIRES_ATLEAST_C99
+SPN_H_REQUIRES_ATLEAST_C99 /* define to override */
 #endif
 
 #ifdef SPN_H_IMPLEMENTATION
@@ -35,25 +35,35 @@ SPN_H_REQUIRES_ATLEAST_C99
 /* includes */
 #include <stdbool.h>
 #include <stdlib.h>
-
-#ifndef SPN_NO_LIBM
-#include <math.h>
-#endif
+#include <tgmath.h>
 
 #ifdef SPN_THREADS_H
 #include <threads.h>
 #endif
 
 /* macro settings */
+#ifndef SPN_DEF
+#ifdef SPN_STATIC
+#define SPN_DEF static
+#elif defined(__cplusplus)
+#define SPN_DEF extern "C"
+#else
+#define SPN_DEF extern
+#endif //
 #ifndef SPN_FPT
 #define SPN_FPT double
 #endif
-
-/* libc functions */
+#ifndef SPN_EPSILON
+#define SPN_EPSILON 0.000001f
+#endif
+#ifndef SPN_PI
+#define SPN_PI 3.14159265358979323846
+#endif
 #ifndef SPN_LIBC_PREFIX /* e.g. SDL_ to use SDL_stdinc.h */
 #define SPN_LIBC_PREFIX
 #endif
 
+/* libc stuff */
 #ifndef spn_malloc
 #define spn_malloc(size) SPN_LIBC_PREFIX##malloc(size)
 #endif
@@ -61,12 +71,28 @@ SPN_H_REQUIRES_ATLEAST_C99
 #define spn_free(mem) SPN_LIBC_PREFIX##free(mem)
 #endif
 
+#ifndef spn_sqrt
+#define spn_sqrt(x) SPN_LIBC_PREFIX##sqrt(x)
+#endif
+#ifndef spn_hypot
+#define spn_hypot(x, y) SPN_LIBC_PREFIX##hypot(x, y)
+#endif
 #ifndef spn_sin
 #define spn_sin(x) SPN_LIBC_PREFIX##sin(x)
 #endif
 #ifndef spn_cos
 #define spn_cos(x) SPN_LIBC_PREFIX##cos(x)
 #endif
+#ifndef spn_acos
+#define spn_acos(x) SPN_LIBC_PREFIX##acos(x)
+#endif
+#ifndef spn_atan2
+#define spn_atan2(y, x) SPN_LIBC_PREFIX##atan2(y, x)
+#endif
+
+/* other macros */
+#define spn_d2r(x) (x * SPN_PI / 180.0f)
+#define spn_r2d(x) (x * 180.0f / SPN_PI)
 
 
 /* api */
@@ -80,6 +106,437 @@ typedef struct spn_vec3 {
     SPN_FPT y;
     SPN_FPT z;
 } spn_vec3;
+
+
+bool spn_vec2_iszero(spn_vec2 vec) {
+    return (
+        vec.x < SPN_EPSILON && vec.x > -SPN_EPSILON
+        && vec.y < SPN_EPSILON && vec.y > -SPN_EPSILON
+    );
+}
+
+SPN_FPT spn_vec2_mag(spn_vec2 vec) {
+    return spn_hypot(vec.x, vec.y);
+}
+
+SPN_FPT spn_vec2_mag_sq(spn_vec2 vec) {
+    return spn_vec2_dot(vec, vec);
+}
+
+SPN_FPT spn_vec2_angle(spn_vec2 vec) {
+    return spn_atan2(vec.y, vec.x);
+}
+
+SPN_FPT spn_vec2_angle_deg(spn_vec2 vec) {
+    return spn_r2d(spn_vec2_angle(vec));
+}
+
+spn_vec2 spn_vec2_unit(spn_vec2 vec) {
+    SPN_FPT mag = spn_vec2_mag(vec);
+    return (spn_vec2) {vec.x / mag, vec.y / mag};
+}
+
+void spn_vec2_unit_ip(spn_vec2 *vec) {
+    SPN_FPT mag = spn_vec2_mag(*vec);
+    vec->x /= mag;
+    vec->y /= mag;
+}
+
+spn_vec2 spn_vec2_proj(spn_vec2 term1, spn_vec2 term2) {
+    return spn_vec2_mul(
+        term2, spn_vec2_dot(term1, term2) / spn_vec2_dot(term2, term2)
+    );
+}
+
+void spn_vec2_proj_ip(spn_vec2 *term1, spn_vec2 term2) {
+    SPN_FPT mult = spn_vec2_dot(*term1, term2) / spn_vec2_dot(term2, term2);
+    term1->x *= mult;
+    term1->y *= mult;
+}
+
+spn_vec2 spn_vec2_add(spn_vec2 addend1, spn_vec2 addend2) {
+    return (spn_vec2) {addend1.x + addend2.x, addend1.y + addend2.y};
+}
+
+void spn_vec2_add_ip(spn_vec2 *addend1, spn_vec2 addend2) {
+    addend1->x += addend2.x;
+    addend1->y += addend2.y;
+}
+
+spn_vec2 spn_vec2_sub(spn_vec2 minuend, spn_vec2 subtrahend) {
+    return (spn_vec2) {minuend.x - subtrahend.x, minuend.y - subtrahend.y};
+}
+
+void spn_vec2_sub_ip(spn_vec2 *minuend, spn_vec2 subtrahend) {
+    minuend->x -= subtrahend.x;
+    minuend->y -= subtrahend.y;
+}
+
+spn_vec2 spn_vec2_mul(spn_vec2 multiplicand, SPN_FPT multiplier) {
+    return (spn_vec2) {
+        multiplicand.x * multiplier, multiplicand.y * multiplier
+    };
+}
+
+void spn_vec2_mul_ip(spn_vec2 *multiplicand, SPN_FPT multiplier) {
+    multiplicand->x *= multiplier;
+    multiplicand->y *= multiplier;
+}
+
+spn_vec2 spn_vec2_div(spn_vec2 dividend, SPN_FPT divisor) {
+    return (spn_vec2) {dividend.x / divisor, dividend.y / divisor};
+}
+
+void spn_vec2_div_ip(spn_vec2 *dividend, SPN_FPT divisor) {
+    dividend->x /= divisor;
+    dividend->y /= divisor;
+}
+
+spn_vec2 spn_vec2_scale(spn_vec2 vec, SPN_FPT mag) {
+    SPN_FPT mult = mag / spn_vec2_mag(vec);
+    return (spn_vec2) {vec.x * mult, vec.y * mult};
+}
+
+void spn_vec2_scale_ip(spn_vec2 *vec, SPN_FPT mag) {
+    SPN_FPT mult = mag / spn_vec2_mag(*vec);
+    vec->x *= mult;
+    vec->y *= mult;
+}
+
+spn_vec2 spn_vec2_lerp(spn_vec2 term1, spn_vec2 term2, SPN_FPT t) {
+    return (spn_vec2) {
+        term1.x + (term2.x - term1.x) * t,
+        term1.y + (term2.y - term1.y) * t,
+    };
+}
+
+void spn_vec2_lerp_ip(spn_vec2 *term1, spn_vec2 term2, SPN_FPT t) {
+    term1->x += (term2.x - term1->x) * t;
+    term1->y += (term2.y - term1->y) * t;
+}
+
+spn_vec2 spn_vec2_mov(spn_vec2 term1, spn_vec2 term2, SPN_FPT disp) {
+    SPN_FPT t = disp / spn_vec2_dist(term1, term2);
+    return spn_vec2_lerp(term1, term2, t);
+}
+
+void spn_vec2_mov_ip(spn_vec2 *term1, spn_vec2 term2, SPN_FPT disp) {
+    SPN_FPT t = disp / spn_vec2_dist(*term1, term2);
+    spn_vec2_lerp_ip(term1, term2, t);
+}
+
+spn_vec2 spn_vec2_rot(spn_vec2 vec, SPN_FPT angle) {
+    SPN_FPT cosine = spn_cos(angle);
+    SPN_FPT sine = spn_sin(angle);
+    return (spn_vec2) {
+        vec.x * cosine - vec.y * sine,
+        vec.x * sine + vec.y * cosine,
+    };
+}
+
+void spn_vec2_rot_ip(spn_vec2 *vec, SPN_FPT angle) {
+    SPN_FPT cosine = spn_cos(angle);
+    SPN_FPT sine = spn_sin(angle);
+    SPN_FPT x = vec->x;
+    SPN_FPT y = vec->y;
+    vec->x = x * cosine - y * sine;
+    vec->y = x * sine + y * cosine;
+}
+
+spn_vec2 spn_vec2_rot_deg(spn_vec2 vec, SPN_FPT angle) {
+    return spn_vec2_rot(vec, spn_d2r(angle));
+}
+
+void spn_vec2_rot_deg_ip(spn_vec2 *vec, SPN_FPT angle) {
+    spn_vec2_rot_ip(vec, spn_d2r(angle));
+}
+
+SPN_FPT spn_vec2_dot(spn_vec2 term1, spn_vec2 term2) {
+    return term1.x * term2.x + term1.y * term2.y;
+}
+
+SPN_FPT spn_vec2_cross(spn_vec2 term1, spn_vec2 term2) {
+    return term1.x * term2.y - term1.y * term2.x;
+}
+
+SPN_FPT spn_vec2_dist(spn_vec2 term1, spn_vec2 term2) {
+    return hypot(term2.x - term1.x, term2.y - term1.y);
+}
+
+SPN_FPT spn_vec2_dist_sq(spn_vec2 term1, spn_vec2 term2) {
+    SPN_FPT x = term2.x - term1.x;
+    SPN_FPT y = term2.y - term1.y;
+    return x * x + y * y;
+}
+
+SPN_FPT spn_vec2_angle_to(spn_vec2 term1, spn_vec2 term2) {
+    return spn_acos(
+        spn_vec2_dot(term1, term2)
+        / (spn_vec2_mag(term1) * spn_vec2_mag(term2))
+    );
+}
+
+
+bool vec3_iszero(vec3 vec) {
+    return (
+        vec.x < SPN_EPSILON && vec.x > -SPN_EPSILON
+        && vec.y < SPN_EPSILON && vec.y > -SPN_EPSILON
+        && vec.z < SPN_EPSILON && vec.z > -SPN_EPSILON
+    );
+}
+
+SPN_FPT vec3_mag(vec3 vec) {
+    return spn_sqrt(vec3_mag_sq(vec));
+}
+
+SPN_FPT vec3_mag_sq(vec3 vec) {
+    return vec3_dot(vec, vec);
+}
+
+SPN_FPT vec3_angle_x(vec3 vec) {
+    return spn_atan2(vec.y, vec.z);
+}
+
+SPN_FPT vec3_angle_x_deg(vec3 vec) {
+    return spn_r2d(vec3_angle_x(vec));
+}
+
+SPN_FPT vec3_angle_y(vec3 vec) {
+    return spn_atan2(vec.z, vec.x);
+}
+
+SPN_FPT vec3_angle_y_deg(vec3 vec) {
+    return spn_r2d(vec3_angle_y(vec));
+}
+
+SPN_FPT vec3_angle_z(vec3 vec) {
+    return spn_atan2(vec.y, vec.x);
+}
+
+SPN_FPT vec3_angle_z_deg(vec3 vec) {
+    return spn_r2d(vec3_angle_z(vec));
+}
+
+vec3 vec3_unit(vec3 vec) {
+    SPN_FPT mag = vec3_mag(vec);
+    return (vec3) {vec.x / mag, vec.y / mag, vec.z / mag};
+}
+
+void vec3_unit_ip(vec3 *vec) {
+    SPN_FPT mag = vec3_mag(*vec);
+    vec->x /= mag;
+    vec->y /= mag;
+    vec->z /= mag;
+}
+
+vec3 vec3_proj(vec3 term1, vec3 term2) {
+    return vec3_mul(term2, vec3_dot(term1, term2) / vec3_dot(term2, term2));
+}
+
+void vec3_proj_ip(vec3 *term1, vec3 term2) {
+    SPN_FPT mult = vec3_dot(*term1, term2) / vec3_dot(term2, term2);
+    term1->x *= mult;
+    term1->y *= mult;
+    term1->z *= mult;
+}
+
+vec3 vec3_add(vec3 addend1, vec3 addend2) {
+    return (vec3) {
+        addend1.x + addend2.x, addend1.y + addend2.y, addend1.z + addend2.z,
+    };
+}
+
+void vec3_add_ip(vec3 *addend1, vec3 addend2) {
+    addend1->x += addend2.x;
+    addend1->y += addend2.y;
+    addend1->z += addend2.z;
+}
+
+vec3 vec3_sub(vec3 minuend, vec3 subtrahend) {
+    return (vec3) {
+        minuend.x - subtrahend.x,
+        minuend.y - subtrahend.y,
+        minuend.z - subtrahend.z,
+    };
+}
+
+void vec3_sub_ip(vec3 *minuend, vec3 subtrahend) {
+    minuend->x -= subtrahend.x;
+    minuend->y -= subtrahend.y;
+    minuend->z -= subtrahend.z;
+}
+
+vec3 vec3_mul(vec3 multiplicand, SPN_FPT multiplier) {
+    return (vec3) {
+        multiplicand.x * multiplier,
+        multiplicand.y * multiplier,
+        multiplicand.z * multiplier,
+    };
+}
+
+void vec3_mul_ip(vec3 *multiplicand, SPN_FPT multiplier) {
+    multiplicand->x *= multiplier;
+    multiplicand->y *= multiplier;
+    multiplicand->z *= multiplier;
+}
+
+vec3 vec3_div(vec3 dividend, SPN_FPT divisor) {
+    return (vec3) {
+        dividend.x / divisor, dividend.y / divisor, dividend.z / divisor,
+    };
+}
+
+void vec3_div_ip(vec3 *dividend, SPN_FPT divisor) {
+    dividend->x /= divisor;
+    dividend->y /= divisor;
+    dividend->z /= divisor;
+}
+
+vec3 vec3_scale(vec3 vec, SPN_FPT mag) {
+    SPN_FPT mult = mag / vec3_mag(vec);
+    return (vec3) {vec.x * mult, vec.y * mult, vec.z * mult};
+}
+
+void vec3_scale_ip(vec3 *vec, SPN_FPT mag) {
+    SPN_FPT mult = mag / vec3_mag(*vec);
+    vec->x *= mult;
+    vec->y *= mult;
+    vec->z *= mult;
+}
+
+vec3 vec3_lerp(vec3 term1, vec3 term2, SPN_FPT t) {
+    return (vec3) {
+        term1.x + (term2.x - term1.x) * t,
+        term1.y + (term2.y - term1.y) * t,
+        term1.z + (term2.z - term1.z) * t,
+    };
+}
+
+void vec3_lerp_ip(vec3 *term1, vec3 term2, SPN_FPT t) {
+    term1->x += (term2.x - term1->x) * t;
+    term1->y += (term2.y - term1->y) * t;
+    term1->z += (term2.z - term1->z) * t;
+}
+
+vec3 vec3_mov(vec3 term1, vec3 term2, SPN_FPT disp) {
+    SPN_FPT t = disp / vec3_dist(term1, term2);
+    return vec3_lerp(term1, term2, t);
+}
+
+void vec3_mov_ip(vec3 *term1, vec3 term2, SPN_FPT disp) {
+    SPN_FPT t = disp / vec3_dist(*term1, term2);
+    vec3_lerp_ip(term1, term2, t);
+}
+
+vec3 vec3_rot_x(vec3 vec, SPN_FPT angle) {
+    SPN_FPT cosine = spn_cos(angle);
+    SPN_FPT sine = spn_sin(angle);
+    return (vec3) {
+        vec.x, vec.y * cosine - vec.z * sine, vec.y * sine + vec.z * cosine,
+    };
+}
+
+void vec3_rot_x_ip(vec3 *vec, SPN_FPT angle) {
+    SPN_FPT cosine = spn_cos(angle);
+    SPN_FPT sine = spn_sin(angle);
+    SPN_FPT y = vec->y;
+    SPN_FPT z = vec->z;
+    vec->y = y * cosine - z * sine;
+    vec->z = y * sine + z * cosine;
+}
+
+vec3 vec3_rot_x_deg(vec3 vec, SPN_FPT angle) {
+    return vec3_rot_x(vec, spn_d2r(angle));
+}
+
+void vec3_rot_x_deg_ip(vec3 *vec, SPN_FPT angle) {
+    vec3_rot_x_ip(vec, spn_d2r(angle));
+}
+
+vec3 vec3_rot_y(vec3 vec, SPN_FPT angle) {
+    SPN_FPT cosine = spn_cos(angle);
+    SPN_FPT sine = spn_sin(angle);
+    return (vec3) {
+        vec.x * cosine + vec.z * sine, vec.y, -vec.x * sine + vec.z * cosine,
+    };
+}
+
+void vec3_rot_y_ip(vec3 *vec, SPN_FPT angle) {
+    SPN_FPT cosine = spn_cos(angle);
+    SPN_FPT sine = spn_sin(angle);
+    SPN_FPT x = vec->x;
+    SPN_FPT z = vec->z;
+    vec->x = x * cosine + z * sine;
+    vec->z = -x * sine + z * cosine;
+}
+
+vec3 vec3_rot_y_deg(vec3 vec, SPN_FPT angle) {
+    return vec3_rot_y(vec, spn_d2r(angle));
+}
+
+void vec3_rot_y_deg_ip(vec3 *vec, SPN_FPT angle) {
+    vec3_rot_y_ip(vec, spn_d2r(angle));
+}
+
+vec3 vec3_rot_z(vec3 vec, SPN_FPT angle) {
+    SPN_FPT cosine = spn_cos(angle);
+    SPN_FPT sine = spn_sin(angle);
+    return (vec3) {
+        vec.x * cosine - vec.y * sine, vec.x * sine + vec.y * cosine, vec.z,
+    };
+}
+
+void vec3_rot_z_ip(vec3 *vec, SPN_FPT angle) {
+    SPN_FPT cosine = spn_cos(angle);
+    SPN_FPT sine = spn_sin(angle);
+    SPN_FPT x = vec->x;
+    SPN_FPT y = vec->y;
+    vec->x = x * cosine - y * sine;
+    vec->y = x * sine + y * cosine;
+}
+
+vec3 vec3_rot_z_deg(vec3 vec, SPN_FPT angle) {
+    return vec3_rot_z(vec, spn_d2r(angle));
+}
+
+void vec3_rot_z_deg_ip(vec3 *vec, SPN_FPT angle) {
+    vec3_rot_z_ip(vec, spn_d2r(angle));
+}
+
+vec3 vec3_cross(vec3 term1, vec3 term2) {
+    return (vec3) {
+        term1.y * term2.z - term1.z * term2.y,
+        term1.z * term2.x - term1.x * term2.z,
+        term1.x * term2.y - term1.y * term2.x,
+    };
+}
+
+void vec3_cross_dest(vec3 term1, vec3 term2, vec3 *dest) {
+    dest->x = term1.y * term2.z - term1.z * term2.y;
+    dest->y = term1.z * term2.x - term1.x * term2.z;
+    dest->z = term1.x * term2.y - term1.y * term2.x;
+}
+
+SPN_FPT vec3_dot(vec3 term1, vec3 term2) {
+    return term1.x * term2.x + term1.y * term2.y + term1.z * term2.z;
+}
+
+SPN_FPT vec3_dist(vec3 term1, vec3 term2) {
+    return spn_sqrt(vec3_dist_sq(term1, term2));
+}
+
+SPN_FPT vec3_dist_sq(vec3 term1, vec3 term2) {
+    SPN_FPT x = term2.x - term1.x;
+    SPN_FPT y = term2.y - term1.y;
+    SPN_FPT z = term2.z - term1.z;
+    return x * x + y * y + z * z;
+}
+
+SPN_FPT vec3_angle_to(vec3 term1, vec3 term2) {
+    return spn_acos(
+        vec3_dot(term1, term2) / (vec3_mag(term1) * vec3_mag(term2))
+    );
+}
 
 
 #endif /* SPN_H_IMPLEMENTATION */
