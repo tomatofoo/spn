@@ -43,11 +43,11 @@ typedef struct spn_vec2 {
     SPN_FPT y;
 } spn_vec2;
 
-typedef struct spn_spn_vec3 {
+typedef struct spn_vec3 {
     SPN_FPT x;
     SPN_FPT y;
     SPN_FPT z;
-} spn_spn_vec3;
+} spn_vec3;
 
 
 /* function prototypes */
