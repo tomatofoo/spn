@@ -150,6 +150,7 @@ SPN_FPT spn_vec3_angle_to(spn_vec3 term1, spn_vec3 term2);
 #define SPN_DEF extern "C"
 #else
 #define SPN_DEF extern
+#endif
 #endif //
 #ifndef SPN_EPSILON
 #define SPN_EPSILON 0.000001f
