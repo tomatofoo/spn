@@ -1,3 +1,3 @@
 # spn
-Spin Physics eNgine: Single-header C physics engine
+Spin Physics eNgine: Single-header C99 physics engine
 

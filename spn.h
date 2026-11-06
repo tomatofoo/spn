@@ -22,10 +22,66 @@
     SOFTWARE.
 */
 
-#ifnef INCLUDE_SPN_H
+#ifndef INCLUDE_SPN_H
 #define INCLUDE_SPN_H
 
-
-
+#if !(defined __STDC_VERSION__ && __STDC_VERSION__ >= 199901L)
+SPN_H_REQUIRES_ATLEAST_C99
 #endif
+
+#ifdef SPN_H_IMPLEMENTATION
+
+
+/* includes */
+#include <stdbool.h>
+#include <stdlib.h>
+
+#ifndef SPN_NO_LIBM
+#include <math.h>
+#endif
+
+#ifdef SPN_THREADS_H
+#include <threads.h>
+#endif
+
+/* macro settings */
+#ifndef SPN_FPT
+#define SPN_FPT double
+#endif
+
+/* libc functions */
+#ifndef SPN_LIBC_PREFIX /* e.g. SDL_ to use SDL_stdinc.h */
+#define SPN_LIBC_PREFIX
+#endif
+
+#ifndef spn_malloc
+#define spn_malloc(size) SPN_LIBC_PREFIX##malloc(size)
+#endif
+#ifndef spn_free
+#define spn_free(mem) SPN_LIBC_PREFIX##free(mem)
+#endif
+
+#ifndef spn_sin
+#define spn_sin(x) SPN_LIBC_PREFIX##sin(x)
+#endif
+#ifndef spn_cos
+#define spn_cos(x) SPN_LIBC_PREFIX##cos(x)
+#endif
+
+
+/* api */
+typedef struct spn_vec2 {
+    SPN_FPT x;
+    SPN_FPT y;
+} spn_vec2;
+
+typedef struct spn_vec3 {
+    SPN_FPT x;
+    SPN_FPT y;
+    SPN_FPT z;
+} spn_vec3;
+
+
+#endif /* SPN_H_IMPLEMENTATION */
+#endif /* INCLUDE_SPN_H */
 
