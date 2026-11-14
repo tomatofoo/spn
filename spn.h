@@ -162,35 +162,35 @@ SPN_FPT spn_vec3_angle_to(spn_vec3 term1, spn_vec3 term2);
 #define SPN_PI 3.14159265358979323846
 #endif
 #endif //
-#ifndef SPN_LIBC_PREFIX /* e.g. SDL_ to use SDL_stdinc.h */
-#define SPN_LIBC_PREFIX
+#ifndef spn_libc_name /* e.g. SDL_malloc */
+#define spn_libc_name(name) name
 #endif
 
 /* libc stuff */
 #ifndef spn_malloc
-#define spn_malloc(size) SPN_LIBC_PREFIX##malloc(size)
+#define spn_malloc(size) spn_libc_name(malloc)(size)
 #endif
 #ifndef spn_free
-#define spn_free(mem) SPN_LIBC_PREFIX##free(mem)
+#define spn_free(mem) spn_libc_name(free)(mem)
 #endif
 
 #ifndef spn_sqrt
-#define spn_sqrt(x) SPN_LIBC_PREFIX##sqrt(x)
+#define spn_sqrt(x) spn_libc_name(sqrt)(x)
 #endif
 #ifndef spn_hypot
-#define spn_hypot(x, y) SPN_LIBC_PREFIX##hypot(x, y)
+#define spn_hypot(x, y) spn_libc_name(hypot)(x, y)
 #endif
 #ifndef spn_sin
-#define spn_sin(x) SPN_LIBC_PREFIX##sin(x)
+#define spn_sin(x) spn_libc_name(sin)(x)
 #endif
 #ifndef spn_cos
-#define spn_cos(x) SPN_LIBC_PREFIX##cos(x)
+#define spn_cos(x) spn_libc_name(cos)(x)
 #endif
 #ifndef spn_acos
-#define spn_acos(x) SPN_LIBC_PREFIX##acos(x)
+#define spn_acos(x) spn_libc_name(acos)(x)
 #endif
 #ifndef spn_atan2
-#define spn_atan2(y, x) SPN_LIBC_PREFIX##atan2(y, x)
+#define spn_atan2(y, x) spn_libc_name(atan2)(y, x)
 #endif
 
 /* other macros */
