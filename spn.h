@@ -25,8 +25,8 @@
 #ifndef INCLUDE_SPN_H
 #define INCLUDE_SPN_H
 
-#if !(defined __STDC_VERSION__ && __STDC_VERSION__ >= 199901L)
-SPN_H_REQUIRES_ATLEAST_C99 /* define to override */
+#if !(defined __STDC_VERSION__ && __STDC_VERSION__ >= 201112L)
+SPN_H_REQUIRES_ATLEAST_C11 /* define to override */
 #endif
 
 /* macro settings */
@@ -48,6 +48,37 @@ typedef struct spn_vec3 {
     SPN_FPT y;
     SPN_FPT z;
 } spn_vec3;
+
+
+typedef enum spn_obj2_type {
+    SPN_OBJ_2DPOLY,
+    SPN_OBJ_2DPILL,
+    SPN_OBJ_2DELLIPSE,
+} spn_obj2_type;
+
+typedef struct spn_obj2 {
+    spn_obj2_type type;
+    spn_vec2 pos;
+    spn_vec2 vel;
+    double rot;
+    double rvel;
+    void *data;
+} spn_obj2;
+
+typedef enum spn_obj3_type {
+    SPN_OBJ_3DPOLY,
+    SPN_OBJ_3DPILL,
+    SPN_OBJ_3DSPHERE,
+} spn_obj3_type;
+
+typedef struct spn_obj3 {
+    spn_obj3_type type;
+    spn_vec3 pos;
+    spn_vec3 vel;
+    spn_vec3 rot;
+    spn_vec3 rvel;
+    void *data;
+} spn_obj3;
 
 
 /* function prototypes */
