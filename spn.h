@@ -49,14 +49,31 @@ typedef struct spn_vec3 {
     SPN_FPT z;
 } spn_vec3;
 
-#define SPN_VERTICES .data.poly.vertices
-#define SPN_RADIUS .data.radius.
-
 typedef enum spn_obj2_type {
     SPN_OBJ2_POLY,
     SPN_OBJ2_PILL,
     SPN_OBJ2_ELLIPSE,
 } spn_obj2_type;
+
+typedef struct spn_obj2_data_poly {
+    spn_vec2 *vertices;
+} spn_obj2_data_poly;
+
+typedef struct spn_obj2_data_pill {
+    SPN_FPT radius;
+    SPN_FPT length;
+} spn_obj2_data_poly;
+
+typedef struct spn_obj2_data_ellipse {
+    SPN_FPT width;
+    SPN_FPT height;
+} spn_obj2_data_poly;
+
+typedef union spn_obj2_data {
+    spn_obj2_data_poly poly;
+    spn_obj2_data_pill pill;
+    spn_obj2_data_ellipse ellipse;
+} spn_obj2_data;
 
 typedef struct spn_obj2 {
     spn_obj2_type type;
@@ -64,12 +81,27 @@ typedef struct spn_obj2 {
     spn_vec2 vel;
     SPN_FPT rot;
     SPN_FPT rvel;
+    spn_obj2_data data; 
 } spn_obj2;
 
 typedef enum spn_obj3_type {
-    SPN_OBJ3_HULL,
+    SPN_OBJ3_POLY,
     SPN_OBJ3_PILL,
 } spn_obj3_type;
+
+typedef struct spn_obj3_data_poly {
+    spn_vec3 *vertices;
+} spn_obj3_data_poly;
+
+typedef struct spn_obj3_data_pill {
+    SPN_FPT radius;
+    SPN_FPT length;
+} spn_obj3_data_pill;
+
+typedef union spn_obj3_data {
+    spn_obj3_data_poly poly;
+    spb_obj3_data_pill pill;
+} spn_obj3_data;
 
 typedef struct spn_obj3 {
     spn_obj3_type type;
@@ -77,7 +109,15 @@ typedef struct spn_obj3 {
     spn_vec3 vel;
     spn_vec3 rot;
     spn_vec3 rvel;
+    spn_obj3_data data; 
 } spn_obj3;
+
+/* property suffixes (use ##) */
+#define SPN_VERTICES .data.poly.vertices
+#define SPN_RADIUS .data.pill.radius
+#define SPN_LENGTH .data.pill.length
+#define SPN_WIDTH .data.ellipse.width
+#define SPN_HEIGHT .data.ellipse.height
 
 
 /* function prototypes */
