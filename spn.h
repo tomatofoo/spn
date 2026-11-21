@@ -227,7 +227,7 @@ SPN_DEF spn_obj2 spn_obj2_poly_create(size_t nvertices, ...);
 #define SPN_EPSILON 0.000001f
 #endif
 #ifndef SPN_PI
-#if SPN_FPT = float
+#if SPN_FPT == float
 #define SPN_PI 3.14159265358979323846f
 #else
 #define SPN_PI 3.14159265358979323846
@@ -264,7 +264,7 @@ SPN_DEF spn_obj2 spn_obj2_poly_create(size_t nvertices, ...);
 #define spn_atan2(y, x) spn_libc_name(atan2)(y, x)
 #endif
 
-/* property suffixes (use ##) */
+/* property suffixes */
 #define spn_nvertices(obj) obj.data.poly.nvertices
 #define spn_vertices(obj) obj.data.poly.vertices
 #define spn_radius(obj) obj.data.pill.radius
