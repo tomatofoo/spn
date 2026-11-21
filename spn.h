@@ -260,11 +260,13 @@ SPN_FPT spn_vec3_angle_to(spn_vec3 term1, spn_vec3 term2);
 #endif
 
 /* property suffixes (use ##) */
+#define spn_nvertices(obj) obj.data.poly.nvertices
 #define spn_vertices(obj) obj.data.poly.vertices
 #define spn_radius(obj) obj.data.pill.radius
 #define spn_length(obj) obj.data.pill.length
 #define spn_width(obj) obj.data.ellipse.width
 #define spn_height(obj) obj.data.ellipse.height
+#define SPN_NVERTICES spn_nvertices()
 #define SPN_VERTICES spn_vertices()
 #define SPN_RADIUS spn_radius()
 #define SPN_LENGTH spn_length()
