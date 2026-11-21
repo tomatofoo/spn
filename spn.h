@@ -59,7 +59,7 @@ typedef enum spn_obj2_type {
 typedef struct spn_obj2_data_poly {
     spn_vec2 *vertices;
     size_t nvertices;
-spn_obj2_data_poly;
+} spn_obj2_data_poly;
 
 typedef struct spn_obj2_data_pill {
     SPN_FPT radius;
