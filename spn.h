@@ -197,6 +197,7 @@ SPN_FPT spn_vec3_dist(spn_vec3 term1, spn_vec3 term2);
 SPN_FPT spn_vec3_dist_sq(spn_vec3 term1, spn_vec3 term2);
 SPN_FPT spn_vec3_angle_to(spn_vec3 term1, spn_vec3 term2);
 
+spn_obj2 spn_obj2_poly_create(size_t nvertices, ...);
 
 #ifdef SPN_H_IMPLEMENTATION
 
