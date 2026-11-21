@@ -707,6 +707,21 @@ SPN_FPT spn_vec3_angle_to(spn_vec3 term1, spn_vec3 term2) {
     );
 }
 
+#define spn_obj2_create(type, ...) \
+#if type == SPN_OBJ2_POLY      \
+(spn_obj2) {                   \
+    .type = type               \
+#elif type == SPN_OBJ2_POLY    \
+    .data = { .poly = {        \
+#elif type == SPN_OBJ2_PILL    \
+    .data = { .pill = {        \
+#elif type == SPN_OBJ2_ELLIPSE \
+    .data = { .ellipse = {     \
+#endif                         \
+        __VA_ARGS__            \
+    }}                         \
+}
+
 
 #endif /* SPN_H_IMPLEMENTATION */
 #endif /* INCLUDE_SPN_H */
