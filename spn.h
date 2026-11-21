@@ -112,14 +112,6 @@ typedef struct spn_obj3 {
     spn_obj3_data data; 
 } spn_obj3;
 
-/* property suffixes (use ##) */
-#define SPN_VERTICES .data.poly.vertices
-#define SPN_RADIUS .data.pill.radius
-#define SPN_LENGTH .data.pill.length
-#define SPN_WIDTH .data.ellipse.width
-#define SPN_HEIGHT .data.ellipse.height
-
-
 /* function prototypes */
 bool spn_vec2_iszero(spn_vec2 vec);
 SPN_FPT spn_vec2_mag(spn_vec2 vec);
@@ -262,6 +254,18 @@ SPN_FPT spn_vec3_angle_to(spn_vec3 term1, spn_vec3 term2);
 #ifndef spn_atan2
 #define spn_atan2(y, x) spn_libc_name(atan2)(y, x)
 #endif
+
+/* property suffixes (use ##) */
+#define spn_vertices(obj) obj.data.poly.vertices
+#define spn_radius(obj) obj.data.pill.radius
+#define spn_length(obj) obj.data.pill.length
+#define spn_width(obj) obj.data.ellipse.width
+#define spn_height(obj) obj.data.ellipse.height
+#define SPN_VERTICES spn_vertices()
+#define SPN_RADIUS spn_radius()
+#define SPN_LENGTH spn_length()
+#define SPN_WIDTH spn_width()
+#define SPN_HEIGHT spn_height()
 
 /* other macros */
 #define spn_d2r(x) (x * SPN_PI / 180.0f)
