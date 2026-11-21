@@ -50,6 +50,7 @@ typedef struct spn_vec3 {
 } spn_vec3;
 
 typedef enum spn_obj2_type {
+    SPN_OBJ2_NULL,
     SPN_OBJ2_POLY,
     SPN_OBJ2_PILL,
     SPN_OBJ2_ELLIPSE,
@@ -57,7 +58,8 @@ typedef enum spn_obj2_type {
 
 typedef struct spn_obj2_data_poly {
     spn_vec2 *vertices;
-} spn_obj2_data_poly;
+    size_t nvertices;
+spn_obj2_data_poly;
 
 typedef struct spn_obj2_data_pill {
     SPN_FPT radius;
@@ -85,12 +87,14 @@ typedef struct spn_obj2 {
 } spn_obj2;
 
 typedef enum spn_obj3_type {
+    SPN_OBJ3_NULL,
     SPN_OBJ3_POLY,
     SPN_OBJ3_PILL,
 } spn_obj3_type;
 
 typedef struct spn_obj3_data_poly {
     spn_vec3 *vertices;
+    size_t nvertices;
 } spn_obj3_data_poly;
 
 typedef struct spn_obj3_data_pill {
@@ -707,19 +711,44 @@ SPN_FPT spn_vec3_angle_to(spn_vec3 term1, spn_vec3 term2) {
     );
 }
 
-#define spn_obj2_create(type, ...) \
-#if type == SPN_OBJ2_POLY      \
-(spn_obj2) {                   \
-    .type = type               \
-#elif type == SPN_OBJ2_POLY    \
-    .data = { .poly = {        \
-#elif type == SPN_OBJ2_PILL    \
-    .data = { .pill = {        \
-#elif type == SPN_OBJ2_ELLIPSE \
-    .data = { .ellipse = {     \
-#endif                         \
-        __VA_ARGS__            \
-    }}                         \
+
+#define spn_obj2_null (spn_obj2) { .type = SPN_OBJ2_NULL }
+#define spn_obj2_poly(nvertices, vertices) \
+    (spn_obj2) { \
+        .type = SPN_OBJ2_POLY;      \
+        .data = { .poly = {         \
+            .nvertices = nvertices; \
+            .vertices = vertices;   \
+        } };                        \
+    }
+#define spn_obj2_pill(radius, length) \
+    (spn_obj2) { \
+        .type = SPN_OBJ2_PILL; \
+        .data = { .pill = {    \
+            .radius = radius;  \
+            .length = length;  \
+        } };                   \
+    }
+#define spn_obj2_pill(width, height) \
+    (spn_obj2) { \
+        .type = SPN_OBJ2_ELLIPSE; \
+        .data = { .ellipse = {    \
+            .width = width;       \
+            .height = height;     \
+        } };                      \
+    }
+
+spn_obj2 spn_obj2_poly_create(size_t nvertices, ...) {
+    spn_vec2 *vertices = spn_malloc(sizeof(spn_vec2) * nvertices);
+    if (vertices == NULL) { return spn_obj2_null; }
+
+    va_list args;
+    va_start(args, nvertices);
+    for (size_t i = 0; i < nvertices; i++) {
+        vertices[i] = va_arg(args, spn_vec2);
+    }
+
+    return spn_obj2_poly(nvertices, vertices);
 }
 
 
