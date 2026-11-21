@@ -100,7 +100,7 @@ typedef struct spn_obj3_data_pill {
 
 typedef union spn_obj3_data {
     spn_obj3_data_poly poly;
-    spb_obj3_data_pill pill;
+    spn_obj3_data_pill pill;
 } spn_obj3_data;
 
 typedef struct spn_obj3 {
