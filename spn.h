@@ -35,6 +35,7 @@ SPN_H_REQUIRES_ATLEAST_C99 /* define to override */
 #endif
 
 /* includes */
+#include <stddef.h>
 #include <stdbool.h>
 
 /* structs */
@@ -202,6 +203,7 @@ SPN_FPT spn_vec3_angle_to(spn_vec3 term1, spn_vec3 term2);
 
 /* includes */
 #include <stdlib.h>
+#include <stdarg.h>
 #include <tgmath.h>
 
 #ifdef SPN_THREADS_H
