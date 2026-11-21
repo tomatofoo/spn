@@ -117,87 +117,98 @@ typedef struct spn_obj3 {
     spn_obj3_data data; 
 } spn_obj3;
 
+/* macro settings */
+#ifndef SPN_DEF
+#ifdef SPN_STATIC
+#define SPN_DEF static
+#elif defined(__cplusplus)
+#define SPN_DEF extern "C"
+#else
+#define SPN_DEF extern
+#endif
+#endif
+
 /* function prototypes */
-bool spn_vec2_iszero(spn_vec2 vec);
-SPN_FPT spn_vec2_mag(spn_vec2 vec);
-SPN_FPT spn_vec2_mag_sq(spn_vec2 vec);
-SPN_FPT spn_vec2_angle(spn_vec2 vec);
-SPN_FPT spn_vec2_angle_deg(spn_vec2 vec);
-spn_vec2 spn_vec2_unit(spn_vec2 vec);
-void spn_vec2_unit_ip(spn_vec2 *vec);
-spn_vec2 spn_vec2_proj(spn_vec2 term1, spn_vec2 term2);
-void spn_vec2_proj_ip(spn_vec2 *term1, spn_vec2 term2);
-spn_vec2 spn_vec2_add(spn_vec2 addend1, spn_vec2 addend2);
-void spn_vec2_add_ip(spn_vec2 *addend1, spn_vec2 addend2);
-spn_vec2 spn_vec2_sub(spn_vec2 minuend, spn_vec2 subtrahend);
-void spn_vec2_sub_ip(spn_vec2 *minuend, spn_vec2 subtrahend);
-spn_vec2 spn_vec2_mul(spn_vec2 multiplicand, SPN_FPT multiplier);
-void spn_vec2_mul_ip(spn_vec2 *multiplicand, SPN_FPT multiplier);
-spn_vec2 spn_vec2_div(spn_vec2 dividend, SPN_FPT divisor);
-void spn_vec2_div_ip(spn_vec2 *dividend, SPN_FPT divisor);
-spn_vec2 spn_vec2_scale(spn_vec2 vec, SPN_FPT mag);
-void spn_vec2_scale_ip(spn_vec2 *vec, SPN_FPT mag);
-spn_vec2 spn_vec2_lerp(spn_vec2 term1, spn_vec2 term2, SPN_FPT t);
-void spn_vec2_lerp_ip(spn_vec2 *term1, spn_vec2 term2, SPN_FPT t);
-spn_vec2 spn_vec2_mov(spn_vec2 term1, spn_vec2 term2, SPN_FPT disp);
-void spn_vec2_mov_ip(spn_vec2 *term1, spn_vec2 term2, SPN_FPT disp);
-spn_vec2 spn_vec2_rot(spn_vec2 vec, SPN_FPT angle);
-void spn_vec2_rot_ip(spn_vec2 *vec, SPN_FPT angle);
-spn_vec2 spn_vec2_rot_deg(spn_vec2 vec, SPN_FPT angle);
-void spn_vec2_rot_deg_ip(spn_vec2 *vec, SPN_FPT angle);
-SPN_FPT spn_vec2_dot(spn_vec2 term1, spn_vec2 term2);
-SPN_FPT spn_vec2_cross(spn_vec2 term1, spn_vec2 term2);
-SPN_FPT spn_vec2_dist(spn_vec2 term1, spn_vec2 term2);
-SPN_FPT spn_vec2_dist_sq(spn_vec2 term1, spn_vec2 term2);
-SPN_FPT spn_vec2_angle_to(spn_vec2 term1, spn_vec2 term2);
+SPN_DEF bool spn_vec2_iszero(spn_vec2 vec);
+SPN_DEF SPN_FPT spn_vec2_mag(spn_vec2 vec);
+SPN_DEF SPN_FPT spn_vec2_mag_sq(spn_vec2 vec);
+SPN_DEF SPN_FPT spn_vec2_angle(spn_vec2 vec);
+SPN_DEF SPN_FPT spn_vec2_angle_deg(spn_vec2 vec);
+SPN_DEF spn_vec2 spn_vec2_unit(spn_vec2 vec);
+SPN_DEF void spn_vec2_unit_ip(spn_vec2 *vec);
+SPN_DEF sspn_vec2 spn_vec2_proj(spn_vec2 term1, spn_vec2 term2);
+SPN_DEF void spn_vec2_proj_ip(spn_vec2 *term1, spn_vec2 term2);
+SPN_DEF spn_vec2 spn_vec2_add(spn_vec2 addend1, spn_vec2 addend2);
+SPN_DEF void spn_vec2_add_ip(spn_vec2 *addend1, spn_vec2 addend2);
+SPN_DEF spn_vec2 spn_vec2_sub(spn_vec2 minuend, spn_vec2 subtrahend);
+SPN_DEF void spn_vec2_sub_ip(spn_vec2 *minuend, spn_vec2 subtrahend);
+SPN_DEF spn_vec2 spn_vec2_mul(spn_vec2 multiplicand, SPN_FPT multiplier);
+SPN_DEF void spn_vec2_mul_ip(spn_vec2 *multiplicand, SPN_FPT multiplier);
+SPN_DEF spn_vec2 spn_vec2_div(spn_vec2 dividend, SPN_FPT divisor);
+SPN_DEF void spn_vec2_div_ip(spn_vec2 *dividend, SPN_FPT divisor);
+SPN_DEF spn_vec2 spn_vec2_scale(spn_vec2 vec, SPN_FPT mag);
+SPN_DEF void spn_vec2_scale_ip(spn_vec2 *vec, SPN_FPT mag);
+SPN_DEF spn_vec2 spn_vec2_lerp(spn_vec2 term1, spn_vec2 term2, SPN_FPT t);
+SPN_DEF void spn_vec2_lerp_ip(spn_vec2 *term1, spn_vec2 term2, SPN_FPT t);
+SPN_DEF spn_vec2 spn_vec2_mov(spn_vec2 term1, spn_vec2 term2, SPN_FPT disp);
+SPN_DEF void spn_vec2_mov_ip(spn_vec2 *term1, spn_vec2 term2, SPN_FPT disp);
+SPN_DEF spn_vec2 spn_vec2_rot(spn_vec2 vec, SPN_FPT angle);
+SPN_DEF void spn_vec2_rot_ip(spn_vec2 *vec, SPN_FPT angle);
+SPN_DEF spn_vec2 spn_vec2_rot_deg(spn_vec2 vec, SPN_FPT angle);
+SPN_DEF void spn_vec2_rot_deg_ip(spn_vec2 *vec, SPN_FPT angle);
+SPN_DEF SPN_FPT spn_vec2_dot(spn_vec2 term1, spn_vec2 term2);
+SPN_DEF SPN_FPT spn_vec2_cross(spn_vec2 term1, spn_vec2 term2);
+SPN_DEF SPN_FPT spn_vec2_dist(spn_vec2 term1, spn_vec2 term2);
+SPN_DEF SPN_FPT spn_vec2_dist_sq(spn_vec2 term1, spn_vec2 term2);
+SPN_DEF SPN_FPT spn_vec2_angle_to(spn_vec2 term1, spn_vec2 term2);
 
-bool spn_vec3_iszero(spn_vec3 vec);
-SPN_FPT spn_vec3_mag(spn_vec3 vec);
-SPN_FPT spn_vec3_mag_sq(spn_vec3 vec);
-SPN_FPT spn_vec3_angle_x(spn_vec3 vec);
-SPN_FPT spn_vec3_angle_x_deg(spn_vec3 vec);
-SPN_FPT spn_vec3_angle_y(spn_vec3 vec);
-SPN_FPT spn_vec3_angle_y_deg(spn_vec3 vec);
-SPN_FPT spn_vec3_angle_z(spn_vec3 vec);
-SPN_FPT spn_vec3_angle_z_deg(spn_vec3 vec);
-spn_vec3 spn_vec3_unit(spn_vec3 vec);
-void spn_vec3_unit_ip(spn_vec3 *vec);
-spn_vec3 spn_vec3_proj(spn_vec3 term1, spn_vec3 term2);
-void spn_vec3_proj_ip(spn_vec3 *term1, spn_vec3 term2);
-spn_vec3 spn_vec3_add(spn_vec3 addend1, spn_vec3 addend2);
-void spn_vec3_add_ip(spn_vec3 *addend1, spn_vec3 addend2);
-spn_vec3 spn_vec3_sub(spn_vec3 minuend, spn_vec3 subtrahend);
-void spn_vec3_sub_ip(spn_vec3 *minuend, spn_vec3 subtrahend);
-spn_vec3 spn_vec3_mul(spn_vec3 multiplicand, SPN_FPT multiplier);
-void spn_vec3_mul_ip(spn_vec3 *multiplicand, SPN_FPT multiplier);
-spn_vec3 spn_vec3_div(spn_vec3 dividend, SPN_FPT divisor);
-void spn_vec3_div_ip(spn_vec3 *dividend, SPN_FPT divisor);
-spn_vec3 spn_vec3_scale(spn_vec3 vec, SPN_FPT mag);
-void spn_vec3_scale_ip(spn_vec3 *vec, SPN_FPT mag);
-spn_vec3 spn_vec3_lerp(spn_vec3 term1, spn_vec3 term2, SPN_FPT t);
-void spn_vec3_lerp_ip(spn_vec3 *term1, spn_vec3 term2, SPN_FPT t);
-spn_vec3 spn_vec3_mov(spn_vec3 term1, spn_vec3 term2, SPN_FPT disp);
-void spn_vec3_mov_ip(spn_vec3 *term1, spn_vec3 term2, SPN_FPT disp);
-spn_vec3 spn_vec3_rot_x(spn_vec3 vec, SPN_FPT angle);
-void spn_vec3_rot_x_ip(spn_vec3 *vec, SPN_FPT angle);
-spn_vec3 spn_vec3_rot_x_deg(spn_vec3 vec, SPN_FPT angle);
-void spn_vec3_rot_x_deg_ip(spn_vec3 *vec, SPN_FPT angle);
-spn_vec3 spn_vec3_rot_y(spn_vec3 vec, SPN_FPT angle);
-void spn_vec3_rot_y_ip(spn_vec3 *vec, SPN_FPT angle);
-spn_vec3 spn_vec3_rot_y_deg(spn_vec3 vec, SPN_FPT angle);
-void spn_vec3_rot_y_deg_ip(spn_vec3 *vec, SPN_FPT angle);
-spn_vec3 spn_vec3_rot_z(spn_vec3 vec, SPN_FPT angle);
-void spn_vec3_rot_z_ip(spn_vec3 *vec, SPN_FPT angle);
-spn_vec3 spn_vec3_rot_z_deg(spn_vec3 vec, SPN_FPT angle);
-void spn_vec3_rot_z_deg_ip(spn_vec3 *vec, SPN_FPT angle);
-spn_vec3 spn_vec3_cross(spn_vec3 term1, spn_vec3 term2);
-void spn_vec3_cross_dest(spn_vec3 term1, spn_vec3 term2, spn_vec3 *dest);
-SPN_FPT spn_vec3_dot(spn_vec3 term1, spn_vec3 term2);
-SPN_FPT spn_vec3_dist(spn_vec3 term1, spn_vec3 term2);
-SPN_FPT spn_vec3_dist_sq(spn_vec3 term1, spn_vec3 term2);
-SPN_FPT spn_vec3_angle_to(spn_vec3 term1, spn_vec3 term2);
+SPN_DEF bool spn_vec3_iszero(spn_vec3 vec);
+SPN_DEF SPN_FPT spn_vec3_mag(spn_vec3 vec);
+SPN_DEF SPN_FPT spn_vec3_mag_sq(spn_vec3 vec);
+SPN_DEF SPN_FPT spn_vec3_angle_x(spn_vec3 vec);
+SPN_DEF SPN_FPT spn_vec3_angle_x_deg(spn_vec3 vec);
+SPN_DEF SPN_FPT spn_vec3_angle_y(spn_vec3 vec);
+SPN_DEF SPN_FPT spn_vec3_angle_y_deg(spn_vec3 vec);
+SPN_DEF SPN_FPT spn_vec3_angle_z(spn_vec3 vec);
+SPN_DEF SPN_FPT spn_vec3_angle_z_deg(spn_vec3 vec);
+SPN_DEF spn_vec3 spn_vec3_unit(spn_vec3 vec);
+SPN_DEF void spn_vec3_unit_ip(spn_vec3 *vec);
+SPN_DEF spn_vec3 spn_vec3_proj(spn_vec3 term1, spn_vec3 term2);
+SPN_DEF void spn_vec3_proj_ip(spn_vec3 *term1, spn_vec3 term2);
+SPN_DEF spn_vec3 spn_vec3_add(spn_vec3 addend1, spn_vec3 addend2);
+SPN_DEF void spn_vec3_add_ip(spn_vec3 *addend1, spn_vec3 addend2);
+SPN_DEF spn_vec3 spn_vec3_sub(spn_vec3 minuend, spn_vec3 subtrahend);
+SPN_DEF void spn_vec3_sub_ip(spn_vec3 *minuend, spn_vec3 subtrahend);
+SPN_DEF spn_vec3 spn_vec3_mul(spn_vec3 multiplicand, SPN_FPT multiplier);
+SPN_DEF void spn_vec3_mul_ip(spn_vec3 *multiplicand, SPN_FPT multiplier);
+SPN_DEF spn_vec3 spn_vec3_div(spn_vec3 dividend, SPN_FPT divisor);
+SPN_DEF void spn_vec3_div_ip(spn_vec3 *dividend, SPN_FPT divisor);
+SPN_DEF spn_vec3 spn_vec3_scale(spn_vec3 vec, SPN_FPT mag);
+SPN_DEF void spn_vec3_scale_ip(spn_vec3 *vec, SPN_FPT mag);
+SPN_DEF spn_vec3 spn_vec3_lerp(spn_vec3 term1, spn_vec3 term2, SPN_FPT t);
+SPN_DEF void spn_vec3_lerp_ip(spn_vec3 *term1, spn_vec3 term2, SPN_FPT t);
+SPN_DEF spn_vec3 spn_vec3_mov(spn_vec3 term1, spn_vec3 term2, SPN_FPT disp);
+SPN_DEF void spn_vec3_mov_ip(spn_vec3 *term1, spn_vec3 term2, SPN_FPT disp);
+SPN_DEF spn_vec3 spn_vec3_rot_x(spn_vec3 vec, SPN_FPT angle);
+SPN_DEF void spn_vec3_rot_x_ip(spn_vec3 *vec, SPN_FPT angle);
+SPN_DEF spn_vec3 spn_vec3_rot_x_deg(spn_vec3 vec, SPN_FPT angle);
+SPN_DEF void spn_vec3_rot_x_deg_ip(spn_vec3 *vec, SPN_FPT angle);
+SPN_DEF spn_vec3 spn_vec3_rot_y(spn_vec3 vec, SPN_FPT angle);
+SPN_DEF void spn_vec3_rot_y_ip(spn_vec3 *vec, SPN_FPT angle);
+SPN_DEF spn_vec3 spn_vec3_rot_y_deg(spn_vec3 vec, SPN_FPT angle);
+SPN_DEF void spn_vec3_rot_y_deg_ip(spn_vec3 *vec, SPN_FPT angle);
+SPN_DEF spn_vec3 spn_vec3_rot_z(spn_vec3 vec, SPN_FPT angle);
+SPN_DEF void spn_vec3_rot_z_ip(spn_vec3 *vec, SPN_FPT angle);
+SPN_DEF spn_vec3 spn_vec3_rot_z_deg(spn_vec3 vec, SPN_FPT angle);
+SPN_DEF void spn_vec3_rot_z_deg_ip(spn_vec3 *vec, SPN_FPT angle);
+SPN_DEF spn_vec3 spn_vec3_cross(spn_vec3 term1, spn_vec3 term2);
+SPN_DEF void spn_vec3_cross_dest(spn_vec3 term1, spn_vec3 term2, spn_vec3 *dest);
+SPN_DEF SPN_FPT spn_vec3_dot(spn_vec3 term1, spn_vec3 term2);
+SPN_DEF SPN_FPT spn_vec3_dist(spn_vec3 term1, spn_vec3 term2);
+SPN_DEF SPN_FPT spn_vec3_dist_sq(spn_vec3 term1, spn_vec3 term2);
+SPN_DEF SPN_FPT spn_vec3_angle_to(spn_vec3 term1, spn_vec3 term2);
 
-spn_obj2 spn_obj2_poly_create(size_t nvertices, ...);
+SPN_DEF spn_obj2 spn_obj2_poly_create(size_t nvertices, ...);
 
 #ifdef SPN_H_IMPLEMENTATION
 
@@ -212,15 +223,6 @@ spn_obj2 spn_obj2_poly_create(size_t nvertices, ...);
 #endif
 
 /* macro settings */
-#ifndef SPN_DEF
-#ifdef SPN_STATIC
-#define SPN_DEF static
-#elif defined(__cplusplus)
-#define SPN_DEF extern "C"
-#else
-#define SPN_DEF extern
-#endif
-#endif //
 #ifndef SPN_EPSILON
 #define SPN_EPSILON 0.000001f
 #endif
