@@ -268,6 +268,7 @@ SPN_FPT spn_vec3_angle_to(spn_vec3 term1, spn_vec3 term2);
 #define SPN_HEIGHT spn_height()
 
 /* other macros */
+#define spn_unused(...) (void)(__VA_ARGS__)
 #define spn_d2r(x) (x * SPN_PI / 180.0f)
 #define spn_r2d(x) (x * 180.0f / SPN_PI)
 
