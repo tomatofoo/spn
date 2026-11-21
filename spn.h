@@ -62,12 +62,12 @@ typedef struct spn_obj2_data_poly {
 typedef struct spn_obj2_data_pill {
     SPN_FPT radius;
     SPN_FPT length;
-} spn_obj2_data_poly;
+} spn_obj2_data_pill;
 
 typedef struct spn_obj2_data_ellipse {
     SPN_FPT width;
     SPN_FPT height;
-} spn_obj2_data_poly;
+} spn_obj2_data_ellipse;
 
 typedef union spn_obj2_data {
     spn_obj2_data_poly poly;
