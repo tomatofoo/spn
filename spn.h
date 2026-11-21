@@ -224,7 +224,7 @@ SPN_FPT spn_vec3_angle_to(spn_vec3 term1, spn_vec3 term2);
 #define SPN_EPSILON 0.000001f
 #endif
 #ifndef SPN_PI
-#if SPN_FPT == float
+#if SPN_FPT = float
 #define SPN_PI 3.14159265358979323846f
 #else
 #define SPN_PI 3.14159265358979323846
