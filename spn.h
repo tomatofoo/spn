@@ -715,27 +715,27 @@ SPN_FPT spn_vec3_angle_to(spn_vec3 term1, spn_vec3 term2) {
 #define spn_obj2_null (spn_obj2) { .type = SPN_OBJ2_NULL }
 #define spn_obj2_poly(nvertices, vertices) \
     (spn_obj2) { \
-        .type = SPN_OBJ2_POLY;      \
+        .type = SPN_OBJ2_POLY,      \
         .data = { .poly = {         \
-            .nvertices = nvertices; \
-            .vertices = vertices;   \
-        } };                        \
+            .nvertices = nvertices, \
+            .vertices = vertices,   \
+        } },                        \
     }
 #define spn_obj2_pill(radius, length) \
     (spn_obj2) { \
-        .type = SPN_OBJ2_PILL; \
+        .type = SPN_OBJ2_PILL, \
         .data = { .pill = {    \
-            .radius = radius;  \
-            .length = length;  \
-        } };                   \
+            .radius = radius,  \
+            .length = length,  \
+        } },                   \
     }
 #define spn_obj2_ellipse(width, height) \
     (spn_obj2) { \
-        .type = SPN_OBJ2_ELLIPSE; \
+        .type = SPN_OBJ2_ELLIPSE, \
         .data = { .ellipse = {    \
-            .width = width;       \
-            .height = height;     \
-        } };                      \
+            .width = width,       \
+            .height = height,     \
+        } },                      \
     }
 
 spn_obj2 spn_obj2_poly_create(size_t nvertices, ...) {
