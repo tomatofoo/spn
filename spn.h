@@ -729,7 +729,7 @@ SPN_FPT spn_vec3_angle_to(spn_vec3 term1, spn_vec3 term2) {
             .length = length;  \
         } };                   \
     }
-#define spn_obj2_pill(width, height) \
+#define spn_obj2_ellipse(width, height) \
     (spn_obj2) { \
         .type = SPN_OBJ2_ELLIPSE; \
         .data = { .ellipse = {    \
