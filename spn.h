@@ -136,7 +136,7 @@ SPN_DEF SPN_FPT spn_vec2_angle(spn_vec2 vec);
 SPN_DEF SPN_FPT spn_vec2_angle_deg(spn_vec2 vec);
 SPN_DEF spn_vec2 spn_vec2_unit(spn_vec2 vec);
 SPN_DEF void spn_vec2_unit_ip(spn_vec2 *vec);
-SPN_DEF sspn_vec2 spn_vec2_proj(spn_vec2 term1, spn_vec2 term2);
+SPN_DEF spn_vec2 spn_vec2_proj(spn_vec2 term1, spn_vec2 term2);
 SPN_DEF void spn_vec2_proj_ip(spn_vec2 *term1, spn_vec2 term2);
 SPN_DEF spn_vec2 spn_vec2_add(spn_vec2 addend1, spn_vec2 addend2);
 SPN_DEF void spn_vec2_add_ip(spn_vec2 *addend1, spn_vec2 addend2);
@@ -225,7 +225,7 @@ SPN_DEF spn_obj2 spn_obj2_poly_create(size_t nvertices, ...);
 /* utility macros needed below */
 #define spn_cat(a, b) a##b
 #define SPN_IS_FLOAT_float 1
-#define spn_type_is_float(x) spn_cat(SPN_IS_FLOAT_, x)
+#define spn_is_float(x) spn_cat(SPN_IS_FLOAT_, x)
 
 /* macro settings */
 #ifndef SPN_EPSILON
