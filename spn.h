@@ -222,12 +222,17 @@ SPN_DEF spn_obj2 spn_obj2_poly_create(size_t nvertices, ...);
 #include <threads.h>
 #endif
 
+/* utility macros needed below */
+#define spn_cat(a, b) a##b
+#define SPN_IS_FLOAT_float 1
+#define spn_type_is_float(x) spn_cat(SPN_IS_FLOAT_, x)
+
 /* macro settings */
 #ifndef SPN_EPSILON
 #define SPN_EPSILON 0.000001f
 #endif
 #ifndef SPN_PI
-#if SPN_FPT == float
+#if spn_is_float(SPN_FPT)
 #define SPN_PI 3.14159265358979323846f
 #else
 #define SPN_PI 3.14159265358979323846
